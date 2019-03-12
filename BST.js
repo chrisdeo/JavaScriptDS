@@ -13,6 +13,8 @@ function BST() {
     this.root = null;
     this.insert = insert;
     this.inOrder = inOrder;
+    this.getMin = getMin;
+    this.getMax = getMax;
 }
 
 function insert(data) {
@@ -64,3 +66,34 @@ function revOrder(node) {
         node.show();
     }  
 }
+
+function getMin() {
+    let curNode = this.root;
+    while (!(curNode.left == null)) {
+        curNode = curNode.left;
+    }
+    return curNode.data;
+}
+
+function getMax() {
+    let curNode = this.root;
+    while (!(curNode.right == null)) {
+        curNode = curNode.right;
+    }
+    return curNode.data;
+}
+
+function find(data) {
+    let curNode = this.root;
+    while (curNode !== null) {
+        if (data === curNode.data) {
+            return curNode;
+        } else if (data < curNode.left.data) {
+            curNode = curNode.right;
+        } else {
+            curNode = curNode.left;
+        }
+    }
+    return null;
+}
+
