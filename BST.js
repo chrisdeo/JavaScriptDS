@@ -15,6 +15,7 @@ function BST() {
     this.inOrder = inOrder;
     this.getMin = getMin;
     this.getMax = getMax;
+    this.remove = remove;
 }
 
 function insert(data) {
@@ -97,3 +98,42 @@ function find(data) {
     return null;
 }
 
+function remove(data) {
+    root = removeNode(this.root, data);
+}
+
+function getSmallest(cur) {
+    while (cur.left !== null) {
+        cur = cur.left;
+    }
+    return cur;
+}
+
+function removeNode(node, data) {
+    if (node === null) {
+        return null;
+    }          
+    if (data === node.data) {
+        if (node.left === null && node.right === null) {
+            return null;
+        }
+        if (node.left === null) {
+            return node.right;
+        }
+        if (node.right === null) {           
+            return node.left;
+        }
+        let tmpNode = getSmallest(node.right);  /* 右子树最小，左子树最大 两种方案用以替换该*/
+        node.data = tmpNode.data;
+        node.right =  removeNode(node.right, tmpNode.data);
+        return node;
+    }
+    else if (data < node.data) {    
+        node.left = removeNode(node.left, node);
+        return node;
+    }
+    else {
+        node.right = removeNode(node.right, data);
+        return node;
+    }
+}
