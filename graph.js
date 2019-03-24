@@ -3,6 +3,7 @@ function Graph(v) {
     this.edges = 0;
     this.adj = [];
     this.marked = [];
+    this.edgeTo = [];       /* 记录广度优先的边，即将所有与该点的邻接点写入 */
     for (let i = 0; i < this.vertices; i++) {
         this.adj[i] = [];
     }
@@ -10,6 +11,8 @@ function Graph(v) {
     this.showGraph = showGraph;
     this.dfs = dfs;
     this.bfs = bfs;
+    this.hasPathTo = hasPathTo;
+    this.pathTo = pathTo;
     this.resetMarked = resetMarked;
     this.resetMarked();
 }
@@ -62,8 +65,33 @@ function bfs(v) {
         this.adj[head].forEach(item => {
             if (!this.marked[item]) {
                 this.marked[item] = true;
+                this.edgeTo[item] = head;
                 queue.push(item);
             }
         })
     }
 }
+
+function pathTo(v, source) {    /* source 为起点 v 为要到的终点*/
+    if (!this.hasPathTo(v)) {
+        return undefined;
+    }
+    let path = [];
+    for (let i = v; i !== source; i = this.edgeTo[i]) {     /* 路径回溯，直到找到源头 */
+        path.push(i);
+    }
+    path.push(source);
+    return path;
+}
+
+function hasPathTo(v) {
+    return this.marked[v];
+}
+
+// g = new Graph(5);
+// g.addEdge(0,1);
+// g.addEdge(0,2);
+// g.addEdge(1,3);
+// g.addEdge(2,4);
+// g.bfs(0);
+// paths = g.pathTo(4, 0);
